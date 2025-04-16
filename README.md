@@ -270,3 +270,405 @@ The message clearly tells them to wait before trying again
 ### 11. Integration tests have been added in the test folder
 
 ### All the optional and the non optional tasks have been completed :)
+
+## 📬 API Documentation
+
+All protected endpoints require a valid JWT token passed in the `Authorization` header:
+
+```
+Authorization: Bearer <your-jwt-token>
+```
+
+---
+
+### 🔐 Auth Routes
+
+---
+
+#### 📝 Register  
+**POST** `/auth/register`  
+Registers a new user.
+
+**Request Body:**
+```json
+{
+  "email": "user@example.com",
+  "password": "yourpassword"
+}
+```
+
+**Success Response:**
+- `201 Created`
+```json
+{
+  "user": {
+    "id": "user_id",
+    "email": "user@example.com"
+  }
+}
+```
+
+**Error Response:**
+- `400 Bad Request` (missing fields or user already exists)
+```json
+{
+  "error": "Email and password are required"
+}
+```
+
+---
+
+#### 🔓 Login  
+**POST** `/auth/login`  
+Authenticates the user and returns a JWT token.
+
+**Request Body:**
+```json
+{
+  "email": "user@example.com",
+  "password": "yourpassword"
+}
+```
+
+**Success Response:**
+- `200 OK`
+```json
+{
+  "access token": "<jwt_token>"
+  "refreshToken": "<refresh_token>"
+}
+```
+
+**Error Response:**
+
+- `400 Bad Request` (missing fields)
+```json
+{
+  "error": "Email and password are required"
+}
+```
+
+- `401 Unauthorized`
+```json
+{
+  "error": "Invalid credentials"
+}
+```
+
+---
+
+#### ♻️ Refresh Token  
+**POST** `/auth/refresh`  
+Issues a new JWT access token using a valid refresh token.
+
+**Request Body:**
+```json
+{
+  "refreshToken": "<refresh_token>"
+}
+```
+
+**Success Response:**
+- `200 OK`
+```json
+{
+  "accesstoken": "<new_jwt_token>"
+}
+```
+
+**Error Response:**
+- `401 Unauthorized`
+```json
+{
+  "error": "Invalid or expired refresh token"
+}
+```
+
+---
+
+### 👥 Contact Routes
+
+---
+
+#### ➕ Create Contact  
+**POST** `/contacts`
+
+**Headers:**
+```
+Authorization: Bearer <token>
+```
+
+**Request Body:**
+```json
+{
+  "name": "John Doe",
+  "email": "john@example.com"
+}
+```
+
+**Success Response:**
+- `201 Created`
+```json
+{
+  "id": "contact_id",
+  "name": "John Doe",
+  "email": "john@example.com"
+}
+```
+
+**Error Response:**
+- `400 Bad Request`
+```json
+{
+  "error": "Invalid input"
+}
+```
+
+---
+
+#### 📄 Get All Contacts  
+**GET** `/contacts`
+
+**Headers:**
+```
+Authorization: Bearer <token>
+```
+
+**Success Response:**
+- `200 OK`
+```json
+[
+  {
+    "id": "contact_id",
+    "name": "John Doe",
+    "email": "john@example.com"
+  }
+]
+```
+
+---
+
+#### 📄 Get Contact by ID  
+**GET** `/contacts/:id`
+
+**Headers:**
+```
+Authorization: Bearer <token>
+```
+
+**Success Response:**
+- `200 OK`
+```json
+{
+  "id": "contact_id",
+  "name": "John Doe",
+  "email": "john@example.com"
+}
+```
+
+**Error Response:**
+- `404 Not Found`
+```json
+{
+  "error": "Contact not found"
+}
+```
+
+---
+
+#### 📝 Update Contact  
+**PUT** `/contacts/:id`
+
+**Headers:**
+```
+Authorization: Bearer <token>
+```
+
+**Request Body:**
+```json
+{
+  "name": "Jane Doe"
+}
+```
+
+**Success Response:**
+- `201 OK`
+```json
+{
+  "id": "contact_id",
+  "name": "John Doe",
+  "email": "john@example.com"
+}
+```
+
+**Error Response:**
+- `400 Bad Request` or `404 Not Found`
+```json
+{
+  "error": "Contact not found"
+}
+```
+
+---
+
+#### ❌ Delete Contact  
+**DELETE** `/contacts/:id`
+
+**Headers:**
+```
+Authorization: Bearer <token>
+```
+
+**Success Response:**
+- `204`
+```
+No content
+```
+
+---
+
+### 🗒️ Note Routes
+
+---
+
+#### ➕ Create Note for Contact  
+**POST** `/contacts/:contactId/notes`
+
+**Headers:**
+```
+Authorization: Bearer <token>
+```
+
+**Request Body:**
+```json
+{
+  "body": "This is a note"
+}
+```
+
+**Success Response:**
+- `201 Created`
+```json
+{
+  "id": "note_id",
+  "contactId": "contact_id",
+  "body": "This is a note"
+}
+```
+
+**Error Response:**
+- `400 Bad Request`
+```json
+{
+  "error": "Note body is required"
+}
+```
+
+---
+
+#### 📄 Get Notes for Contact  
+**GET** `/contacts/:contactId/notes`
+
+**Headers:**
+```
+Authorization: Bearer <token>
+```
+
+**Success Response:**
+- `200 OK`
+```json
+[
+  {
+    "id": "note_id",
+    "body": "This is a note"
+  }
+]
+```
+
+---
+
+#### 📄 Get Note by ID  
+**GET** `/contacts/:contactId/notes/:noteId`
+
+**Headers:**
+```
+Authorization: Bearer <token>
+```
+
+**Success Response:**
+- `200 OK`
+```json
+{
+  "id": "note_id",
+  "contactId": "contact_id",
+  "body": "This is a note"
+}
+```
+
+**Error Response:**
+- `404 Not Found`
+```json
+{
+  "error": "Note not found"
+}
+```
+
+---
+
+#### 📝 Update Note  
+**PUT** `/contacts/:contactId/notes/:noteId`
+
+**Headers:**
+```
+Authorization: Bearer <token>
+```
+
+**Request Body:**
+```json
+{
+  "body": "Updated note content"
+}
+```
+
+**Success Response:**
+- `201`
+```json
+{
+  "id": "note_id",
+  "contactId": "contact_id",
+  "body": "This is a note"
+}
+```
+
+**Error Response:**
+- `400 Bad Request`
+```json
+{
+  "error": "Note body is required"
+}
+```
+
+---
+
+#### ❌ Delete Note  
+**DELETE** `/contacts/:contactId/notes/:noteId`
+
+**Headers:**
+```
+Authorization: Bearer <token>
+```
+
+**Success Response:**
+- `204`
+```json
+No Content
+```
+
+**Error Response:**
+- `404 Not Found`
+```json
+{
+  "error": "Note not found"
+}
+```
+

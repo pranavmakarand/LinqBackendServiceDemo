@@ -672,3 +672,42 @@ No Content
 }
 ```
 
+## 🚀 What I Would Improve or Add with More Time
+
+If given additional time, I would focus on enhancing the scalability, searchability, and developer experience of the service:
+
+### 1. 🔍 Elasticsearch Integration for Notes Search
+
+After processing `note.created` or `note.updated` jobs in the background queue, I would index the note content into an **Elasticsearch** cluster. This would enable:
+
+- Fast, full-text search across all notes
+- Ranked and filtered search results
+- Improved query capabilities for large-scale datasets
+
+> Example: `GET /search/notes?query=meeting` would return relevant notes with matching content.
+
+---
+
+### 2. ⚡ Distributed Caching with Redis
+
+To improve performance and reduce PostgreSQL load, I would implement **Redis-based caching** for:
+
+- Frequently accessed contacts (`GET /contacts`)
+- Notes per contact (`GET /contacts/:id/notes`)
+
+Cached responses would be refreshed on mutation events or automatically expired using TTL (Time-to-Live). This would significantly boost API responsiveness.
+
+---
+
+### 3. 🛠️ Additional Enhancements
+
+- 🧾 Swagger/OpenAPI documentation for interactive API reference  
+- 📊 Bull Board UI for visual monitoring of background jobs  
+- 🐳 Docker Compose setup for PostgreSQL + Redis + App  
+- 🔁 CI/CD automation with GitHub Actions for continuous testing and deployment  
+
+---
+
+These improvements would further elevate the scalability, reliability, and maintainability of the service in a production-grade environment.
+
+

@@ -200,7 +200,7 @@ OR
 The job fails max attempts: it moves to failed and stays there
 ```
 
-### 9. Rate Limiting 
+### 10. Rate Limiting 
 I am using express-rate-limit to add rate limiting as middleware per route.
 
 ```Bash
@@ -267,6 +267,6 @@ The message clearly tells them to wait before trying again
 
 ```
 
-### 10. Integration tests have been added in the test folder
+### 11. Integration tests have been added in the test folder
 
 ### All the optional and the non optional tasks have been completed :)
